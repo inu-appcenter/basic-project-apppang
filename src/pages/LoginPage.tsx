@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import appPangLogo from '@/assets/apppang-logo.png'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -26,7 +25,7 @@ function LoginPage() {
 
       {/* Logo */}
       <div className="flex justify-center items-center w-full py-3">
-        <img src={appPangLogo} alt="앱팡" className="h-[29.51px]" />
+        <img src="/apppang-logo.png" alt="앱팡" className="h-[29.51px]" />
       </div>
 
       {/* Email Field */}
