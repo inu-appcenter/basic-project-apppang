@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import prettierPlugin from 'eslint-plugin-prettier/recommended';
 import { FlatCompat } from '@eslint/eslintrc';
+import { fixupConfigRules } from '@eslint/compat';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -19,7 +20,8 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   { ignores: ['dist', 'node_modules', 'eslint.config.js'] },
-  ...compat.extends('airbnb', 'airbnb-typescript', 'airbnb/hooks'),
+  // airbnb-typescript는 @typescript-eslint 플러그인 충돌로 제외, 직접 tseslint로 처리
+  ...fixupConfigRules(compat.extends('airbnb', 'airbnb/hooks')),
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
@@ -44,7 +46,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       'import/prefer-default-export': 'off',
-      'react/react-in-jsx-scope': 'off', // React 17+
+      'react/react-in-jsx-scope': 'off',
       'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': ['error'],
@@ -52,15 +54,22 @@ export default tseslint.config(
         'error',
         { devDependencies: ['vite.config.ts', 'eslint.config.js'] }
       ],
+      // TypeScript 컴파일러가 이미 검사하는 규칙들 비활성화
+      'no-undef': 'off',
+      'no-redeclare': 'off',
+      'no-dupe-class-members': 'off',
+      'import/named': 'off',
+      'import/no-named-as-default-member': 'off',
+      'import/no-unresolved': 'off',
       // 리팩토링 시 아래 규칙들 활성화
-      '@typescript-eslint/no-unused-vars': 'off',           // 원래: ['warn']
-      '@typescript-eslint/no-explicit-any': 'off',          // 원래: 'error'
-      '@typescript-eslint/no-unsafe-assignment': 'off',     // 원래: 'error'
-      '@typescript-eslint/no-unsafe-member-access': 'off',  // 원래: 'error'
-      '@typescript-eslint/no-unsafe-call': 'off',           // 원래: 'error'
-      '@typescript-eslint/no-unsafe-return': 'off',         // 원래: 'error'
-      '@typescript-eslint/no-unsafe-argument': 'off',       // 원래: 'error'
-      '@typescript-eslint/explicit-module-boundary-types': 'off', // 원래: 'error'
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
     },
   },
   prettierPlugin,
