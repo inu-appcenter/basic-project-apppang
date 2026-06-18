@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 import {
   Camera,
   Clock,
@@ -12,23 +12,23 @@ import {
   Star,
   Tag,
   Zap,
-} from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // ---- Types ----
 
 type Banner = {
-  id: number
-  bgColor: string
-}
+  id: number;
+  bgColor: string;
+};
 
 type Category = {
-  id: number
-  label: string
-  path: string
-  icon: ReactNode
-}
+  id: number;
+  label: string;
+  path: string;
+  icon: ReactNode;
+};
 
 // ---- Constants ----
 
@@ -38,10 +38,15 @@ const BANNERS: Banner[] = [
   { id: 3, bgColor: 'bg-secondary-100' },
   { id: 4, bgColor: 'bg-primary-100' },
   { id: 5, bgColor: 'bg-secondary-100' },
-]
+];
 
 const CATEGORIES: Category[] = [
-  { id: 1, label: '자주산상품', path: '/products?category=frequent', icon: <ShoppingBag size={40} /> },
+  {
+    id: 1,
+    label: '자주산상품',
+    path: '/products?category=frequent',
+    icon: <ShoppingBag size={40} />,
+  },
   { id: 2, label: '쿠팡플레이', path: '/products?category=play', icon: <Monitor size={40} /> },
   { id: 3, label: '로켓프레시', path: '/products?category=fresh', icon: <Leaf size={40} /> },
   { id: 4, label: '쿠팡이츠', path: '/products?category=eats', icon: <Coffee size={40} /> },
@@ -51,36 +56,36 @@ const CATEGORIES: Category[] = [
   { id: 8, label: 'R.LUX', path: '/products?category=luxury', icon: <Star size={40} /> },
   { id: 9, label: '로켓배송', path: '/products?category=rocket', icon: <Zap size={40} /> },
   { id: 10, label: '로켓직구', path: '/products?category=global', icon: <Globe size={40} /> },
-]
+];
 
 // ---- Main Component ----
 
 function MainPage() {
-  const navigate = useNavigate()
-  const [currentBanner, setCurrentBanner] = useState(0)
-  const touchStartX = useRef(0)
+  const navigate = useNavigate();
+  const [currentBanner, setCurrentBanner] = useState(0);
+  const touchStartX = useRef(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentBanner(prev => (prev + 1) % BANNERS.length)
-    }, 3000)
-    return () => clearInterval(timer)
-  }, [])
+      setCurrentBanner((prev) => (prev + 1) % BANNERS.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-  }
+    touchStartX.current = e.touches[0].clientX;
+  };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        setCurrentBanner(prev => (prev + 1) % BANNERS.length)
+        setCurrentBanner((prev) => (prev + 1) % BANNERS.length);
       } else {
-        setCurrentBanner(prev => (prev - 1 + BANNERS.length) % BANNERS.length)
+        setCurrentBanner((prev) => (prev - 1 + BANNERS.length) % BANNERS.length);
       }
     }
-  }
+  };
 
   return (
     <div>
@@ -92,7 +97,7 @@ function MainPage() {
           onClick={() => navigate('/search')}
         >
           <Search size={16} className="shrink-0 text-black" />
-          <span className="flex-1 text-left text-body-3 text-gray-300">앱팡에서 검색하세요!</span>
+          <span className="text-body-3 flex-1 text-left text-gray-300">앱팡에서 검색하세요!</span>
           <Camera size={24} className="shrink-0 text-black" />
         </button>
       </div>
@@ -109,7 +114,7 @@ function MainPage() {
           className="col-start-1 row-start-1 flex h-full transition-transform duration-300 ease-in-out"
           style={{ transform: `translateX(-${currentBanner * 100}%)` }}
         >
-          {BANNERS.map(banner => (
+          {BANNERS.map((banner) => (
             <button
               key={banner.id}
               type="button"
@@ -121,7 +126,7 @@ function MainPage() {
             </button>
           ))}
         </div>
-        <div className="col-start-1 row-start-1 flex items-end justify-center gap-2 pb-4 z-10">
+        <div className="z-10 col-start-1 row-start-1 flex items-end justify-center gap-2 pb-4">
           {BANNERS.map((banner, index) => (
             <button
               key={banner.id}
@@ -137,25 +142,23 @@ function MainPage() {
       </div>
 
       {/* Category Menu */}
-      <div className="px-2 py-4 my-4">
+      <div className="my-4 px-2 py-4">
         <div className="grid grid-cols-5">
-          {CATEGORIES.map(cat => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               type="button"
               onClick={() => navigate(cat.path)}
-              className="flex flex-col items-center gap-1.5 py-3 text-black"
+              className="hover:text-primary-200 flex flex-col items-center gap-1.5 py-3 text-black transition-colors"
             >
               {cat.icon}
-              <span className="break-keep text-center text-[11px] leading-tight">
-                {cat.label}
-              </span>
+              <span className="text-center text-[11px] leading-tight break-keep">{cat.label}</span>
             </button>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default MainPage
+export default MainPage;

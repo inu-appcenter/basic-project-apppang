@@ -29,7 +29,7 @@ function NavigationBar() {
             key={path}
             type="button"
             onClick={() => navigate(path)}
-            className={`flex flex-1 flex-col items-center justify-center gap-1 ${
+            className={`flex flex-1 flex-col items-center justify-center gap-1 transition-colors hover:bg-primary-100 hover:text-primary-200 ${
               isActive ? 'text-primary-200' : 'text-gray-300'
             }`}
           >
